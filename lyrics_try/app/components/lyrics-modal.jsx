@@ -2,11 +2,23 @@
 
 import { useState } from "react"
 import { submitLyrics } from "../actions" // Import submit function
+import { useLyrics } from "@/context/LyricsContext"
 
 export default function LyricsModal({ isOpen, onClose, onLyricsSubmitted }) {
   const [lyrics, setLyrics] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitResult, setSubmitResult] = useState(null)
+
+  const { setLyrics: setContextLyrics, 
+      setmodelsuccessRate: setmodelsuccessRate,
+      setAGsuccessRate: setAGsuccessRate,
+      setmodelconfidence: setmodelconfidence,
+      setAGconfidence: setAGconfidence,
+      setuniq: setuniq,
+      setrepe: setrepe,
+      setlexica: setlexica,
+      setRhythm: setRhythm
+    } = useLyrics();
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -23,7 +35,17 @@ export default function LyricsModal({ isOpen, onClose, onLyricsSubmitted }) {
         setSubmitResult({ success: true, message: "Lyrics submitted successfully!" })
 
         // Pass lyrics and success rate back to Home.js
-        onLyricsSubmitted(response.lyrics, response.successRate)
+        onLyricsSubmitted(response.lyrics, response.modelsuccessRate, response.AGsuccessRate, response.modelconfidence, response.AGconfidence, response.uniq, response.repe, response.lexica, response.Rhythm)
+        setLyrics(response.lyrics)
+        setContextLyrics(response.lyrics);
+        setmodelsuccessRate(response.modelsuccessRate);
+        setAGsuccessRate(response.AGsuccessRate);
+        setmodelconfidence(response.uniq);
+        setAGconfidence(response.AGconfidence);
+        setuniq(response.uniq);
+        setrepe(response.repe);
+        setlexica(response.lexica);
+        setRhythm(response.Rhythm);
 
         // Close modal after delay
         setTimeout(() => {
