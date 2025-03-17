@@ -8,8 +8,8 @@ import ReactECharts from "echarts-for-react";
 export default function DetailsPage() {
     const { lyrics, modelsuccessRate, AGsuccessRate, modelconfidence, AGconfidence, uniq, repe, lexica, Rhythm } = useLyrics(); // Get lyrics from context
 
-    const [autogluonconfidence, setAutogluononfidence] = useState(AGconfidence + modelconfidence);
-    const [ownmodelonfidence, setOwnModelonfidence] = useState(modelconfidence);
+    const [autogluonconfidence, setAutogluononfidence] = useState((AGconfidence + modelconfidence).toFixed(2));
+    const [ownmodelonfidence, setOwnModelonfidence] = useState(modelconfidence.toFixed(2));
 
 
     const [autogluonsucess, setAutogluonsucess] = useState(AGsuccessRate);
@@ -19,6 +19,11 @@ export default function DetailsPage() {
     const [repetition, setRepetition] = useState(repe);
     const [lexical, setLexical] = useState(lexica);
     const [rhythm, setRhythm] = useState(Rhythm);
+
+    const openPDF = (pdfUrl) => {
+        window.open(pdfUrl, "_blank");
+    };
+
     // 3D Pie Chart Configuration
     const pieChartOptions = {
         title: {
@@ -38,8 +43,8 @@ export default function DetailsPage() {
                     color: "#fff",
                 },
                 data: [
-                    { value: autogluonconfidence, name: "AutoGluon Confidence", itemStyle: { color: "#00C49F" } },
-                    { value: ownmodelonfidence, name: "Model Confidence", itemStyle: { color: "#FF8042" } },
+                    { value: parseFloat(autogluonconfidence), name: "AutoGluon Confidence", itemStyle: { color: "#00C49F" } },
+                    { value: parseFloat(ownmodelonfidence), name: "Model Confidence", itemStyle: { color: "#FF8042" } },
                 ],
                 roseType: "radius",
             },
@@ -76,7 +81,7 @@ export default function DetailsPage() {
                         ].map((item, index) => (
                             <div key={index} className="flex flex-col items-center justify-center gap-3">
                                 <h6 className="text-[18px]">{item.label}</h6> {/* Text below the circle */}
-                                <div className="h-[150px] w-[150px] text-[18px] bg-transparent border border-dotted border-neutral-50 rounded-full flex items-center justify-center">
+                                <div className="h-[150px] w-[150px] text-[18px] bg-transparent border-[3px] border-dotted border-neutral-50 rounded-full flex items-center justify-center">
                                     {item.content}% {/* Text inside the circle */}
                                 </div>
                             </div>
@@ -85,17 +90,35 @@ export default function DetailsPage() {
 
                     {/* 3D Pie Chart Section */}
                     <div className="flex justify-center items-center mt-[50px] text-[20px] font-bold">
-                        <div className="flex flex-col items-center justify-center mr-10">
-                            <div>Model Estimated Success</div>
-                            <div>{ownmodelsucess}%</div>
+                        <div className="flex flex-col items-center justify-center text-[#FF8042]">
+                            <div className="mb-[50%] flex flex-col items-center justify-center p-[10px] relative left-[40%]">
+                                <div>Model Confidence</div>
+                                <div>{parseFloat(ownmodelonfidence)}%</div>
+                            </div>
+                            <div className="border-[3px] flex flex-col items-center justify-center p-[10px]">
+                                <div>Model Estimated Success</div>
+                                <div>{ownmodelsucess}%</div>
+                            </div>
                         </div>
                         <ReactECharts option={pieChartOptions} style={{ width: "400px", height: "400px" }} />
-                        <div className="flex flex-col items-center justify-center mr-10">
-                            <div>Autogluon Estimated Success</div>
-                            <div>{autogluonsucess}%</div>
+                        <div className="flex flex-col items-center justify-center text-[#00C49F]">
+                            <div className="mb-[50%] flex flex-col items-center justify-center p-[10px] relative right-[30%]">
+                                <div>Autogluon Confidence</div>
+                                <div>{parseFloat(autogluonconfidence)}%</div>
+                            </div>
+                            <div className="border-[3px] flex flex-col items-center justify-center p-[10px]">
+                                <div>Autogluon Estimated Success</div>
+                                <div>{autogluonsucess}%</div>
+                            </div>
+                           
                         </div>
-                       
                     </div>
+                    {/* <button
+                        onClick={() => openPDF("/path-to-your-autogluon-pdf.pdf")}
+                        className="mt-2 px-4 py-2 bg-[#00C49F] text-white rounded-lg hover:bg-[#008F7A]"
+                    >
+                        View Report
+                    </button> */}
                 </div>
             </div>
         </main>

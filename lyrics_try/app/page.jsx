@@ -130,8 +130,8 @@ export default function Home() {
 
         {/* Display Lyrics & Success Rate if Found */}
         {lyrics && (
-          <button className="bg-white/10 p-4 w-full rounded-md text-white bg-amber-600" onClick={() => router.push("/details")}>
-              <div className="flex justify-center text-white">
+          <button className="p-4 w-full rounded-md text-white hover:text-black bg-amber-600 hover:bg-amber-400" onClick={() => router.push("/details")}>
+            <div className="flex justify-center">
                 {/* <h2 className="text-xl font-semibold">Success Rate: {successRate}%</h2> */}
                 See Report
               </div>
