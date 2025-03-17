@@ -1,6 +1,6 @@
 "use server"
 
-const BASE_URL = "http://127.0.0.1:5001"; // Your backend server
+const BASE_URL = "http://127.0.0.1:5002"; // Your backend server
 
 // Function to fetch lyrics using the expected API format
 export async function searchLyrics(singer, song) {

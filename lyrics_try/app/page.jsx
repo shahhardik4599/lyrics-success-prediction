@@ -15,7 +15,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [lyrics, setLyrics] = useState("")
   const [successRate, setSuccessRate] = useState(null)
-  
+
   const { setLyrics: setContextLyrics, 
     setmodelsuccessRate: setmodelsuccessRate,
     setAGsuccessRate: setAGsuccessRate,
@@ -131,12 +131,10 @@ export default function Home() {
         {/* Display Lyrics & Success Rate if Found */}
         {lyrics && (
           <button className="bg-white/10 p-4 w-full rounded-md text-white bg-amber-600" onClick={() => router.push("/details")}>
-            {successRate !== null && (
               <div className="flex justify-center text-white">
                 {/* <h2 className="text-xl font-semibold">Success Rate: {successRate}%</h2> */}
                 See Report
               </div>
-            )}
             {/* <h2 className="text-xl font-semibold">Lyrics</h2>
             <p className="mt-2 whitespace-pre-line">{lyrics}</p> */}
           </button>

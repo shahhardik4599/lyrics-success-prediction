@@ -31,7 +31,12 @@ class Predictor:
 
     def compute_entropy(self,probabilities):
         probabilities = np.array(probabilities)
-        return -np.sum(probabilities * np.log(probabilities + 1e-10))
+
+        result = 0
+        for prob in probabilities:
+            result += prob * np.log(prob + 1e-10)
+
+        return result
     
     
         
@@ -41,7 +46,7 @@ class Predictor:
         probabilities = self.ag_predictor.predict_proba(input_data)
 
     
-        return round(probabilities["True"].values[0] * 100, 2)
+        return round(float(probabilities["True"].values[0]) * 100, 2)
         
     
     def unique_ratio(self,text):
@@ -98,14 +103,17 @@ class Predictor:
         lex_div = self.lexical_diversity(lyrics)
         rhyme_density_value = self.rhyme_density(lyrics)
 
-            
+
+
+
         model_result = self.predict(text)
         ag_result = self.predict_ag(text)
-
         
-        ag_entropy = self.compute_entropy([ag_result, 1 - ag_result])
-        model_entropy = self.compute_entropy([model_result, 1 - model_result])
+        ag_entropy = self.compute_entropy([ag_result / 100, 1 - (ag_result / 100)])        
 
+        model_entropy = self.compute_entropy([model_result / 100, 1 - (model_result / 100 )])
+
+        print({ "lyrics" : lyrics, "ag_result" : ag_result, "model_result" : model_result, "ag_con" : 1 - ag_entropy, "model_con" : 1- model_entropy, "ld" : lex_div, "rep" : rep_ratio, "uni" : uni_ratio, "rd" : rhyme_density_value})
         
         return { "lyrics" : lyrics, "ag_result" : ag_result, "model_result" : model_result, "ag_con" : 1 - ag_entropy, "model_con" : 1- model_entropy, "ld" : lex_div, "rep" : rep_ratio, "uni" : uni_ratio, "rd" : rhyme_density_value}
         

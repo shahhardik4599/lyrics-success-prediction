@@ -8,8 +8,10 @@ import ReactECharts from "echarts-for-react";
 export default function DetailsPage() {
     const { lyrics, modelsuccessRate, AGsuccessRate, modelconfidence, AGconfidence, uniq, repe, lexica, Rhythm } = useLyrics(); // Get lyrics from context
 
-    const [autogluonconfidence, setAutogluononfidence] = useState(AGconfidence);
+    const [autogluonconfidence, setAutogluononfidence] = useState(AGconfidence + modelconfidence);
     const [ownmodelonfidence, setOwnModelonfidence] = useState(modelconfidence);
+
+
     const [autogluonsucess, setAutogluonsucess] = useState(AGsuccessRate);
     const [ownmodelsucess, setOwnModelsucess] = useState(modelsuccessRate);
 
@@ -36,14 +38,15 @@ export default function DetailsPage() {
                     color: "#fff",
                 },
                 data: [
-                    { value: autogluonconfidence, name: "Confidence", itemStyle: { color: "#00C49F" } },
-                    { value: ownmodelonfidence, name: "Confidence", itemStyle: { color: "#FF8042" } },
+                    { value: autogluonconfidence, name: "AutoGluon Confidence", itemStyle: { color: "#00C49F" } },
+                    { value: ownmodelonfidence, name: "Model Confidence", itemStyle: { color: "#FF8042" } },
                 ],
                 roseType: "radius",
             },
         ],
         backgroundColor: "transparent",
     };
+
 
     return (
         <main className="flex h-screen flex-col items-center justify-center p-4 relative overflow-hidden">
